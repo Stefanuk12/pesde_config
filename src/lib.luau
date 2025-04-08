@@ -24,6 +24,7 @@ local function createConfigFile(name: string, data: any)
     -- // Ensure we know where to output the file
     local output_file: string = data.pesde_config_file
     assert(typeof(output_file) == "string", `invalid pesde_config_file found for {name} (expected string, got {typeof(output_file)})`)
+    data.pesde_config_file = nil
 
     -- // Resolve the file type
     local file_type_split = output_file:split(".")
