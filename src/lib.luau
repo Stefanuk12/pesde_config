@@ -9,7 +9,7 @@ local function loadPesde(path: string)
 
     -- // Decode from TOML and ensure the configuration key exists
     local pesde = serde.decode("toml", fs.readFile(path))
-    assert(typeof(pesde.configuration) == "table", `invalid pesde configuration found (expected table, got {typeof(pesde)})`)
+    assert(typeof(pesde.configuration) == "table", `invalid pesde configuration found for {path} (expected table, got {typeof(pesde)})`)
     return pesde
 end
 
@@ -17,7 +17,7 @@ end
 local function createConfigFile(name: string, data: any)
     -- // Ensure we know where to output the file
     local output_file: string = data.pesde_config_file
-    assert(typeof(output_file) == "string", `invalid pesde_config_file found (expected string, got {typeof(output_file)})`)
+    assert(typeof(output_file) == "string", `invalid pesde_config_file found for {name} (expected string, got {typeof(output_file)})`)
 
     -- // Resolve the file type
     local file_type_split = output_file:split(".")
