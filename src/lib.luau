@@ -14,6 +14,12 @@ local function loadPesde(path: string)
 end
 
 -- // Creates the configuration file from the TOML representation
+local defaultFileTypes = {
+    luaurc = "json",
+    json = "json",
+    toml = "toml",
+    yaml = "yaml",
+}
 local function createConfigFile(name: string, data: any)
     -- // Ensure we know where to output the file
     local output_file: string = data.pesde_config_file
@@ -23,8 +29,19 @@ local function createConfigFile(name: string, data: any)
     local file_type_split = output_file:split(".")
     local file_type = file_type_split[#file_type_split]
 
-    -- // Output the final file
-    local encoded = serde.encode(file_type :: any, data, true)
+    -- // Custom logic to allow custom file types. If custom, `data` property must be passed.
+    local encoded
+    if defaultFileTypes[file_type] then
+        -- // Simply output the encoded repr
+        local encode_type = defaultFileTypes[file_type]
+        encoded = serde.encode(encode_type, data, true)
+    else
+        -- // Assume it's like an ignore file or something
+        encoded = data.data
+        assert(typeof(encoded) == "string", `invalid data found for {name}, assuming is misc file (expected string, got {typeof(encoded)})`)
+    end
+
+    -- // Write the file
     fs.writeFile(output_file, encoded)
 end
 
