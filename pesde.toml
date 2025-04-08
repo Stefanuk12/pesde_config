@@ -1,0 +1,17 @@
+name = "stefanuk12/pesde_config"
+version = "0.1.0"
+authors = ["Stefanuk12"]
+repository = "https://github.com/Stefanuk12/pesde_config"
+license = "MIT"
+
+[target]
+environment = "lune"
+lib = "src/lib.luau"
+bin = "src/bin.luau"
+build_files = ["src"]
+
+[target.scripts]
+pesde_config = "src/bin.luau"
+
+[indices]
+default = "https://github.com/pesde-pkg/index"
