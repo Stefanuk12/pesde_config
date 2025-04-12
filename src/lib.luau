@@ -8,7 +8,8 @@ local function loadPesde(path: string)
     assert(fs.isFile(path), `could not find pesde file at {path}`)
 
     -- // Decode from TOML and ensure the configuration key exists
-    local pesde = serde.decode("toml", fs.readFile(path))
+    local pesde_text = fs.readFile(path):gsub("%[%s*%]", "\"EMPTY_ARRAY\"")
+    local pesde = serde.decode("toml", pesde_text)
     assert(typeof(pesde.configuration) == "table", `invalid pesde configuration found for {path} (expected table, got {typeof(pesde)})`)
     return pesde
 end
@@ -43,6 +44,7 @@ local function createConfigFile(name: string, data: any)
     end
 
     -- // Write the file
+    encoded = encoded:gsub("\"EMPTY_ARRAY\"", "[]")
     fs.writeFile(output_file, encoded)
 end
 
